@@ -14,6 +14,7 @@
 		AD4F360A29003CCD00915EB3 /* Toy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F360929003CCD00915EB3 /* Toy.swift */; };
 		AD4F360D29003D8A00915EB3 /* BabyToyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F360C29003D8A00915EB3 /* BabyToyView.swift */; };
 		AD4F360F29003DA300915EB3 /* DraggableToy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F360E29003DA300915EB3 /* DraggableToy.swift */; };
+		AD4F3611290049B300915EB3 /* ToyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F3610290049B300915EB3 /* ToyContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		AD4F360929003CCD00915EB3 /* Toy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toy.swift; sourceTree = "<group>"; };
 		AD4F360C29003D8A00915EB3 /* BabyToyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyToyView.swift; sourceTree = "<group>"; };
 		AD4F360E29003DA300915EB3 /* DraggableToy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableToy.swift; sourceTree = "<group>"; };
+		AD4F3610290049B300915EB3 /* ToyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToyContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 		AD4F35F929003BE300915EB3 /* BabySortingToyGames */ = {
 			isa = PBXGroup;
 			children = (
+				AD4F361229004AC400915EB3 /* ViewModel */,
 				AD4F360B29003D8000915EB3 /* Views */,
 				AD4F360829003CB300915EB3 /* Model */,
 				AD4F35FA29003BE300915EB3 /* BabySortingToyGamesApp.swift */,
@@ -87,9 +90,17 @@
 			isa = PBXGroup;
 			children = (
 				AD4F360C29003D8A00915EB3 /* BabyToyView.swift */,
+				AD4F3610290049B300915EB3 /* ToyContainer.swift */,
 				AD4F360E29003DA300915EB3 /* DraggableToy.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		AD4F361229004AC400915EB3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +175,7 @@
 			files = (
 				AD4F360A29003CCD00915EB3 /* Toy.swift in Sources */,
 				AD4F360D29003D8A00915EB3 /* BabyToyView.swift in Sources */,
+				AD4F3611290049B300915EB3 /* ToyContainer.swift in Sources */,
 				AD4F360F29003DA300915EB3 /* DraggableToy.swift in Sources */,
 				AD4F35FD29003BE300915EB3 /* ContentView.swift in Sources */,
 				AD4F35FB29003BE300915EB3 /* BabySortingToyGamesApp.swift in Sources */,

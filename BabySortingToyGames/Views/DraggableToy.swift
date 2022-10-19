@@ -7,14 +7,26 @@
 
 import SwiftUI
 
-struct DraggableToy: View {
+struct DraggableToy<Draggable: Gesture>: View {
+    let toy: Toy
+    private let size: CGFloat = 100
+    let position: CGPoint
+    let gesture: Draggable
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Circle()
+            .fill(.red)
+            .frame(width: size, height: size)
+            .position(position)
+            .gesture(gesture)
     }
 }
 
 struct DraggableToy_Previews: PreviewProvider {
     static var previews: some View {
-        DraggableToy()
+        DraggableToy(
+            toy: Toy.all.first!,
+            position: CGPoint(x: 100, y: 100),
+            gesture: DragGesture())
     }
 }

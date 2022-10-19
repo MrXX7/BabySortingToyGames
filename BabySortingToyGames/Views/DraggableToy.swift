@@ -15,8 +15,9 @@ struct DraggableToy<Draggable: Gesture>: View {
     
     var body: some View {
         Circle()
-            .fill(.red)
+            .fill(toy.color)
             .frame(width: size, height: size)
+            .shadow(radius: 10)
             .position(position)
             .gesture(gesture)
     }
@@ -26,7 +27,7 @@ struct DraggableToy_Previews: PreviewProvider {
     static var previews: some View {
         DraggableToy(
             toy: Toy.all.first!,
-            position: CGPoint(x: 100, y: 100),
+            position: .zero,
             gesture: DragGesture())
     }
 }

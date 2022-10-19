@@ -8,25 +8,46 @@
 import SwiftUI
 
 struct ToyContainer: View {
-    @State var position = CGPoint.zero
+    let toy: Toy
+    
+    @ObservedObject var viewModel: ToyViewModel
+    private let regularSize: CGFloat = 100
+    private let highlightedSize: CGFloat = 130
     
     var body: some View {
+        ZStack{
             Circle()
-                .fill(.blue)
-                .frame(width: 100, height: 100)
-                .overlay {
-                    GeometryReader { proxy -> Color in
-                        let frame = proxy.frame(in: .global)
-                        position = CGPoint(x: frame.midX, y: frame.midY)
-                        
-                        return Color.clear
-                }
+                .fill(toy.color)
+                .frame(width: regularSize, height: regularSize)
+            if viewModel.isHighlighted(id: toy.id) {
+                Circle()
+                    .fill(toy.color)
+                    .opacity(0.5)
+                    .frame(
+                        width: highlightedSize,
+                        height: highlightedSize
+                    )
+            }
         }
+            .overlay {
+                GeometryReader { proxy -> Color in
+                    viewModel.update(
+                        frame: proxy.frame(in: .global),
+                        for: toy.id
+                    )
+                    
+                    return Color.clear
+                }
+            }
+            .frame(width: highlightedSize, height: highlightedSize)
     }
 }
 
 struct ToyContainer_Previews: PreviewProvider {
     static var previews: some View {
-        ToyContainer()
+        ToyContainer(
+            toy: Toy.all.first!,
+            viewModel: ToyViewModel()
+        )
     }
 }

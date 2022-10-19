@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct BabyToyView: View {
-    let currentToy = Toy(id: 1, color: .red)
-    @State var position = CGPoint(x: 100, y: 100)
+    @StateObject private var viewModel = ToyViewModel()
     
     let gridItems = [
         GridItem(.flexible()),
@@ -20,27 +19,52 @@ struct BabyToyView: View {
     var drag: some Gesture {
         DragGesture()
             .onChanged { state in
-                position = state.location
+                viewModel.update(dragPosition: state.location)
             }
             .onEnded { state in
-                position = CGPoint(x: 100, y: 100)
+                viewModel.update(dragPosition: state.location)
+                withAnimation {
+                    viewModel.confirmWhereToyWasDropped()
+                }
             }
     }
     
     var body: some View {
-        VStack {
+        ZStack {
             LazyVGrid(columns: gridItems, spacing: 100) {
-                ForEach(0..<6, id: \.self) { _ in
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 100, height: 100)
+                ForEach(viewModel.toyContainers, id: \.id) { toy in
+                    ToyContainer(
+                        toy: toy,
+                        viewModel: viewModel
+                    )
                 }
             }
-            DraggableToy(toy: currentToy,
-                         position: position,
-                         gesture: drag
-            )
+            if let currentToy = viewModel.currentToy {
+                DraggableToy(
+                    toy: currentToy,
+                    position: viewModel.currentPosition,
+                    gesture: drag
+                )
+                .opacity(viewModel.draggableToyOpacity)
+            }
         }
+        .onAppear {
+            viewModel.setNextToy()
+        }
+        .alert(
+            Text("Congratulations, you won! 🎉"),
+            isPresented: $viewModel.isGameOver,
+            actions: {
+                Button("OK") {
+                    withAnimation {
+                        viewModel.generateNewGame()
+                    }
+                }
+            },
+            message: {
+                Text("Number of attemps: \(viewModel.attempts)")
+            }
+        )
     }
 }
 

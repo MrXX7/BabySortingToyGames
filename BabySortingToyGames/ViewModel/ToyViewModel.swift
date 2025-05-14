@@ -15,7 +15,8 @@ class ToyViewModel: ObservableObject {
     @Published var draggableToyOpacity: CGFloat = 1.0
     @Published var isGameOver = false
     @Published private(set) var attempts = 0
-    @Published private(set) var score = 0 // Yeni: Puanı takip etmek için değişken
+    @Published private(set) var score = 0
+    @Published var showCorrectAnimation = false // Yeni: Doğru animasyonunu tetiklemek için
 
     private static let initialPosition = CGPoint(
         x: UIScreen.main.bounds.midX,
@@ -38,7 +39,8 @@ class ToyViewModel: ObservableObject {
 
         if highlightedId == currentToy?.id {
             setCurrentPositionToHighlightedContainer(WithId: highlightedId)
-            incrementScore() // Yeni: Doğru eşleşmede puanı artır
+            incrementScore()
+            triggerCorrectAnimation() // Yeni: Doğru animasyonu tetikle
             generateNextRound()
         } else {
             resetPosition()
@@ -108,7 +110,7 @@ class ToyViewModel: ObservableObject {
     func generateNewGame() {
         toys = Array(Toy.all.shuffled().prefix(upTo: 3))
         attempts = 0
-        score = 0 // Yeni: Yeni oyunda puanı sıfırla
+        score = 0
         generateNextRound()
     }
 
@@ -136,8 +138,15 @@ class ToyViewModel: ObservableObject {
         score += 1
     }
 
-    // MARK: - Public access to score
     func getCurrentScore() -> Int {
         return score
+    }
+
+    // MARK: - Correct Animation
+    private func triggerCorrectAnimation() {
+        showCorrectAnimation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // 1 saniye sonra animasyonu kapat
+            self.showCorrectAnimation = false
+        }
     }
 }

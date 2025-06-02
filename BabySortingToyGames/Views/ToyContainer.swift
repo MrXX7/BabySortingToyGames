@@ -15,31 +15,33 @@ struct ToyContainer: View {
     private let highlightedSize: CGFloat = 130
     
     var body: some View {
-        ZStack{
+        ZStack {
             Circle()
                 .fill(toy.color)
                 .frame(width: regularSize, height: regularSize)
+            
+            // Highlighted state with scale and shadow
             if viewModel.isHighlighted(id: toy.id) {
                 Circle()
                     .fill(toy.color)
-                    .opacity(0.5)
-                    .frame(
-                        width: highlightedSize,
-                        height: highlightedSize
-                    )
+                    .opacity(0.7) // Slightly less opaque to show underlying circle
+                    .frame(width: highlightedSize, height: highlightedSize)
+                    .scaleEffect(1.1) // Slightly scale up when highlighted
+                    .shadow(color: .black.opacity(0.4), radius: 15, x: 0, y: 10) // More pronounced shadow
             }
         }
-            .overlay {
-                GeometryReader { proxy -> Color in
-                    viewModel.update(
-                        frame: proxy.frame(in: .global),
-                        for: toy.id
-                    )
-                    
-                    return Color.clear
-                }
+        .overlay {
+            GeometryReader { proxy -> Color in
+                viewModel.update(
+                    frame: proxy.frame(in: .global),
+                    for: toy.id
+                )
+                
+                return Color.clear
             }
-            .frame(width: highlightedSize, height: highlightedSize)
+        }
+        .frame(width: highlightedSize, height: highlightedSize) // Ensure enough space for highlighted state
+        .animation(.spring(), value: viewModel.highlightedId) // Add animation for highlight state changes
     }
 }
 

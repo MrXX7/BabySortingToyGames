@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD2851992DEE2AFA0021E111 /* CorrectAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2851982DEE2AFA0021E111 /* CorrectAnimationView.swift */; };
 		AD4F35FB29003BE300915EB3 /* BabySortingToyGamesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F35FA29003BE300915EB3 /* BabySortingToyGamesApp.swift */; };
 		AD4F35FD29003BE300915EB3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4F35FC29003BE300915EB3 /* ContentView.swift */; };
 		AD4F35FF29003BE400915EB3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD4F35FE29003BE400915EB3 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AD2851982DEE2AFA0021E111 /* CorrectAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrectAnimationView.swift; sourceTree = "<group>"; };
 		AD4F35F729003BE300915EB3 /* BabySortingToyGames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabySortingToyGames.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD4F35FA29003BE300915EB3 /* BabySortingToyGamesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabySortingToyGamesApp.swift; sourceTree = "<group>"; };
 		AD4F35FC29003BE300915EB3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				AD4F360C29003D8A00915EB3 /* BabyToyView.swift */,
+				AD2851982DEE2AFA0021E111 /* CorrectAnimationView.swift */,
 				AD4F3610290049B300915EB3 /* ToyContainer.swift */,
 				AD4F360E29003DA300915EB3 /* DraggableToy.swift */,
 			);
@@ -178,6 +181,7 @@
 			files = (
 				AD4F360A29003CCD00915EB3 /* Toy.swift in Sources */,
 				AD4F360D29003D8A00915EB3 /* BabyToyView.swift in Sources */,
+				AD2851992DEE2AFA0021E111 /* CorrectAnimationView.swift in Sources */,
 				AD4F3611290049B300915EB3 /* ToyContainer.swift in Sources */,
 				AD4F360F29003DA300915EB3 /* DraggableToy.swift in Sources */,
 				AD4F35FD29003BE300915EB3 /* ContentView.swift in Sources */,

@@ -12,18 +12,17 @@ struct DraggableToy<Draggable: Gesture>: View {
     private let size: CGFloat = 100
     let position: CGPoint
     let gesture: Draggable
-    let isDragging: Bool // New: To know if the toy is being dragged
+    let isDragging: Bool // This is correct, it's a simple Bool
     
     var body: some View {
         Circle()
             .fill(toy.color)
             .frame(width: size, height: size)
-            // Apply scale and shadow based on isDragging
-            .scaleEffect(isDragging ? 1.1 : 1.0) // Scale up slightly when dragging
-            .shadow(radius: isDragging ? 15 : 10) // More shadow when dragging
+            .scaleEffect(isDragging ? 1.1 : 1.0)
+            .shadow(radius: isDragging ? 15 : 10)
             .position(position)
             .gesture(gesture)
-            .animation(.interactiveSpring(), value: isDragging) // Animate the scale and shadow changes
+            .animation(.interactiveSpring(), value: isDragging)
     }
 }
 
@@ -33,7 +32,7 @@ struct DraggableToy_Previews: PreviewProvider {
             toy: Toy.all.first!,
             position: .zero,
             gesture: DragGesture(),
-            isDragging: false // Default for preview
+            isDragging: false
         )
     }
 }

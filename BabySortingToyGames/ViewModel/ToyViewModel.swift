@@ -17,7 +17,7 @@ class ToyViewModel: ObservableObject {
     @Published private(set) var attempts = 0
     @Published private(set) var score = 0
     @Published var showCorrectAnimation = false
-    @Published var isDraggingToy = false // New: To indicate if a toy is currently being dragged
+    @Published var isDraggingToy = false // To indicate if a toy is currently being dragged
 
     private static let initialPosition = CGPoint(
         x: UIScreen.main.bounds.midX,
@@ -31,9 +31,10 @@ class ToyViewModel: ObservableObject {
 
     // MARK: - Game lifecycle
     func confirmWhereToyWasDropped() {
+        // Ensure isDraggingToy is reset regardless of drop success
         defer {
             highlightedId = nil
-            isDraggingToy = false // Reset dragging state when drop is confirmed
+            isDraggingToy = false // Guarantee reset here after drag ends
         }
 
         guard let highlightedId = highlightedId else {
@@ -53,7 +54,72 @@ class ToyViewModel: ObservableObject {
         attempts += 1
     }
 
-    // ... (rest of the ViewModel code remains the same)
+    func resetPosition() {
+        currentPosition = ToyViewModel.initialPosition
+    }
+
+    func setCurrentPositionToHighlightedContainer(WithId id: Int) {
+        guard let frame = frames[id] else {
+            return
+        }
+        currentPosition = CGPoint(x: frame.midX, y: frame.midY)
+        makeToyInvisible()
+    }
+
+    func makeToyInvisible() {
+        draggableToyOpacity = 0
+    }
+
+    func generateNextRound() {
+        setNextToy()
+
+        if currentToy == nil {
+            gameOver()
+        } else {
+            prepareObjects()
+        }
+    }
+
+    func setNextToy() {
+        currentToy = toys.popLast()
+    }
+
+    func gameOver() {
+        isGameOver = true
+    }
+
+    func prepareObjects() {
+        shuffleToyContainersWithAnimation()
+        resetCurrentToyWithoutAnimation()
+    }
+
+    func shuffleToyContainersWithAnimation() {
+        withAnimation {
+            toyContainers.shuffle()
+        }
+    }
+
+    func resetCurrentToyWithoutAnimation() {
+        withAnimation(.none) {
+            resetPosition()
+            restoreOpacityWithAnimation()
+        }
+    }
+
+    func restoreOpacityWithAnimation() {
+        withAnimation {
+            draggableToyOpacity = 1.0
+        }
+    }
+
+    func generateNewGame() {
+        toys = Array(Toy.all.shuffled().prefix(upTo: 3))
+        attempts = 0
+        score = 0
+        isGameOver = false // Ensure game over state is reset
+        isDraggingToy = false // Ensure dragging state is reset for new game
+        generateNextRound()
+    }
 
     // MARK: - Updates in the screen
     func update(frame: CGRect, for id: Int) {

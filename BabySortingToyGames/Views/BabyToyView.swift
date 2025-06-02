@@ -19,7 +19,8 @@ struct BabyToyView: View {
     var drag: some Gesture {
         DragGesture()
             .onChanged { state in
-                if !viewModel.isDraggingToy { // Set to true only on first change
+                // Set isDraggingToy to true when drag starts
+                if !viewModel.isDraggingToy {
                     viewModel.isDraggingToy = true
                 }
                 viewModel.update(dragPosition: state.location)
@@ -28,7 +29,7 @@ struct BabyToyView: View {
                 viewModel.update(dragPosition: state.location)
                 withAnimation {
                     viewModel.confirmWhereToyWasDropped()
-                    // isDraggingToy is now reset in confirmWhereToyWasDropped
+                    // isDraggingToy is reset within confirmWhereToyWasDropped
                 }
             }
     }
@@ -48,7 +49,8 @@ struct BabyToyView: View {
                     toy: currentToy,
                     position: viewModel.currentPosition,
                     gesture: drag,
-                    isDragging: viewModel.isDraggingToy // Pass the new binding
+                    // Ensure you pass the @Published property from ViewModel directly
+                    isDragging: viewModel.isDraggingToy
                 )
                 .opacity(viewModel.draggableToyOpacity)
             }

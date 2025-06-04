@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit // UIKit'i import etmeyi unutmayın!
 
 class ToyViewModel: ObservableObject {
 
@@ -17,7 +18,11 @@ class ToyViewModel: ObservableObject {
     @Published private(set) var attempts = 0
     @Published private(set) var score = 0
     @Published var showCorrectAnimation = false
-    @Published var isDraggingToy = false // To indicate if a toy is currently being dragged
+    @Published var isDraggingToy = false
+
+    // Feedback generator'ları burada tanımlayalım
+    private let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium) // Medium bir etki için
 
     private static let initialPosition = CGPoint(
         x: UIScreen.main.bounds.midX,
@@ -29,16 +34,22 @@ class ToyViewModel: ObservableObject {
     private var toys = Array(Toy.all.shuffled().prefix(upTo: 3))
     var toyContainers = Toy.all.shuffled()
 
+    init() {
+        // Jeneratörleri erken hazırlayarak gecikmeyi önleriz
+        notificationFeedbackGenerator.prepare()
+        impactFeedbackGenerator.prepare()
+    }
+
     // MARK: - Game lifecycle
     func confirmWhereToyWasDropped() {
-        // Ensure isDraggingToy is reset regardless of drop success
         defer {
             highlightedId = nil
-            isDraggingToy = false // Guarantee reset here after drag ends
+            isDraggingToy = false
         }
 
         guard let highlightedId = highlightedId else {
             resetPosition()
+            triggerIncorrectHaptic() // Yeni: Yanlış yerleştirmede haptik geri bildirim
             return
         }
 
@@ -46,9 +57,11 @@ class ToyViewModel: ObservableObject {
             setCurrentPositionToHighlightedContainer(WithId: highlightedId)
             incrementScore()
             triggerCorrectAnimation()
+            triggerCorrectHaptic() // Yeni: Doğru yerleştirmede haptik geri bildirim
             generateNextRound()
         } else {
             resetPosition()
+            triggerIncorrectHaptic() // Yeni: Yanlış yerleştirmede haptik geri bildirim
         }
 
         attempts += 1
@@ -86,6 +99,7 @@ class ToyViewModel: ObservableObject {
 
     func gameOver() {
         isGameOver = true
+        triggerGameOverHaptic() // Yeni: Oyun bitiminde haptik geri bildirim
     }
 
     func prepareObjects() {
@@ -116,8 +130,8 @@ class ToyViewModel: ObservableObject {
         toys = Array(Toy.all.shuffled().prefix(upTo: 3))
         attempts = 0
         score = 0
-        isGameOver = false // Ensure game over state is reset
-        isDraggingToy = false // Ensure dragging state is reset for new game
+        isGameOver = false
+        isDraggingToy = false
         generateNextRound()
     }
 
@@ -155,5 +169,26 @@ class ToyViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showCorrectAnimation = false
         }
+    }
+
+    // MARK: - Haptic Feedback
+    private func triggerCorrectHaptic() {
+        notificationFeedbackGenerator.notificationOccurred(.success)
+        notificationFeedbackGenerator.prepare() // Yeniden hazırlayarak bir sonraki kullanım için hazır tutarız
+    }
+
+    private func triggerIncorrectHaptic() {
+        notificationFeedbackGenerator.notificationOccurred(.error)
+        notificationFeedbackGenerator.prepare()
+    }
+
+    private func triggerGameOverHaptic() {
+        notificationFeedbackGenerator.notificationOccurred(.success) // Başarı hissi için success kullandım
+        notificationFeedbackGenerator.prepare()
+    }
+
+    // Draggable toy'ı kaldırma ve bırakma anları için hafif bir etki
+    func triggerDragStartHaptic() {
+        impactFeedbackGenerator.impactOccurred()
     }
 }

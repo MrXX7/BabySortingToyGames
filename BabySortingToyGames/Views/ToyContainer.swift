@@ -16,18 +16,25 @@ struct ToyContainer: View {
     
     var body: some View {
         ZStack {
+            // Background color circle remains
             Circle()
                 .fill(toy.color)
                 .frame(width: regularSize, height: regularSize)
+            
+            // Image overlay on top of the circle
+            Image(toy.imageName) // Use the image name
+                .resizable()
+                .scaledToFit()
+                .frame(width: regularSize * 0.7, height: regularSize * 0.7) // Slightly smaller than container
             
             // Highlighted state with scale and shadow
             if viewModel.isHighlighted(id: toy.id) {
                 Circle()
                     .fill(toy.color)
-                    .opacity(0.7) // Slightly less opaque to show underlying circle
+                    .opacity(0.7)
                     .frame(width: highlightedSize, height: highlightedSize)
-                    .scaleEffect(1.1) // Slightly scale up when highlighted
-                    .shadow(color: .black.opacity(0.4), radius: 15, x: 0, y: 10) // More pronounced shadow
+                    .scaleEffect(1.1)
+                    .shadow(color: .black.opacity(0.4), radius: 15, x: 0, y: 10)
             }
         }
         .overlay {
@@ -40,8 +47,8 @@ struct ToyContainer: View {
                 return Color.clear
             }
         }
-        .frame(width: highlightedSize, height: highlightedSize) // Ensure enough space for highlighted state
-        .animation(.spring(), value: viewModel.highlightedId) // Add animation for highlight state changes
+        .frame(width: highlightedSize, height: highlightedSize)
+        .animation(.spring(), value: viewModel.highlightedId)
     }
 }
 
